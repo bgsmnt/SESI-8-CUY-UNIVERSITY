@@ -14,9 +14,9 @@
             <h1>Password Generators By BGS</h1>
             <div class="d-flex flex-column gap-2 mt-2">
                 <label for="passwordLength" class="text-uppercase fw-bold">Panjang Password</label>
-                <input class="form-control form-control-lg" id="passwordLength" type="number" />
-                <label for="passwordLength" class="text-uppercase fw-bold">Password</label>
-                <input class="form-control form-control-lg" id="password" disabled />
+               <input class="form-control form-control-lg" id="passwordInput" disabled maxlength="100" />
+               <label for="passwordInput" class="text-uppercase fw-bold">Password</label>
+<input class="form-control form-control-lg" id="passwordInput" disabled />
                 <button class="btn btn-dark text-uppercase fw-bold btn-lg mt-2" onclick="getPassword()">GENERATE PASSWORD</button>
                 <a class="btn btn-primary text-uppercase fw-bold btn-lg mt-2" onclick="savePassword()" id="saveButton">Save PASSWORD</a>
             </div>
@@ -42,10 +42,16 @@ function generatePassword(length) {
 }
 
 function getPassword() {
-    const newPassword = generatePassword(passwordLength.value);
+    const length = parseInt(passwordLength.value);
+    if (isNaN(length) || length <= 0) {
+        alert('Panjang password harus bilangan bulat positif.');
+        return;
+    }
+    const newPassword = generatePassword(length);
     password.value = newPassword;
     alert('Kata sandi telah dihasilkan!!');
 }
+
 
 function savePassword() {
     const newPassword = password.value.trim();
@@ -57,21 +63,19 @@ function savePassword() {
 
     document.title = newPassword;
 
-    // Membuat tautan untuk mengunduh kata sandi sebagai file teks
     const downloadLink = document.createElement('a');
-    downloadLink.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(`password saya: ${newPassword}`));
-    downloadLink.setAttribute('download', 'MyPasswordGenerateLOG.txt');
+    downloadLink.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(`Password: ${newPassword}`));
+    downloadLink.setAttribute('download', 'MyPassword.txt');
     downloadLink.style.display = 'none';
     document.body.appendChild(downloadLink);
 
-    // Mengklik tautan unduh secara otomatis
     downloadLink.click();
 
-    // Hapus tautan unduh dari DOM setelah selesai
     document.body.removeChild(downloadLink);
 
-    alert('Kata sandi berhasil disimpan.');
+    alert('Kata sandi berhasil disimpan di file teks.');
 }
+
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
